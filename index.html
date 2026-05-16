@@ -977,7 +977,7 @@ if(localStorage.getItem('kk-dark')==='1')document.documentElement.setAttribute('
 
 // ===== AUTH =====
 document.getElementById('login-btn').onclick=async()=>{
-  await SB.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});
+  await SB.auth.signInWithOAuth({provider:'google',options:{redirectTo:'https://dat0925.github.io/kaikera/'}});
 };
 document.getElementById('logout-btn').onclick=async()=>{
   await SB.auth.signOut();location.reload();

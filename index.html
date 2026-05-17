@@ -375,15 +375,17 @@ const ACCT_TYPES=[
 async function loadAll(){
   if(!S.user)return;
   const uid=S.user.id;
-  const[r1,r2,r3,r4]=await Promise.all([
+  const[r1,r2,r3]=await Promise.all([
     SB.from('kk_accounts').select('*').eq('user_id',uid).order('sort_order'),
     SB.from('kk_transactions').select('*').eq('user_id',uid).order('date',{ascending:false}).order('created_at',{ascending:false}),
     SB.from('kk_categories').select('*').eq('user_id',uid).order('sort_order'),
-    SB.from('kk_activities').select('*').eq('user_id',uid).order('sort_order').catch(()=>({data:[]})),
   ]);
   S.accounts=r1.data||[];S.transactions=r2.data||[];
   S.categories=r3.data&&r3.data.length?r3.data:DEFAULT_CATS;
-  S.activities=r4.data||[];
+  try{
+    const r4=await SB.from('kk_activities').select('*').eq('user_id',uid).order('sort_order');
+    S.activities=r4.data||[];
+  }catch(e){S.activities=[];}
 }
 function getCats(type){return type==='transfer'?[]:S.categories.filter(c=>c.type===type);}
 function getCat(id){return S.categories.find(c=>c.id===id)||DEFAULT_CATS.find(c=>c.id===id)||{name:'その他',icon:'📦',color:'#6b7280'}}

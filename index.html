@@ -82,7 +82,7 @@ input,select{font-family:var(--font);color:var(--text);font-size:16px;background
 .menu-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 .tb-title{font-size:15px;font-weight:700;letter-spacing:-.3px;flex:1}
 .content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
-@media(max-width:768px){.content{padding:14px;padding-bottom:calc(76px + var(--safe-bottom))}.content.view-input{padding:0;padding-bottom:0}}
+@media(max-width:768px){.content{padding:14px;padding-bottom:calc(76px + var(--safe-bottom))}.content.view-input{padding:0!important;padding-bottom:0!important}}
 
 /* MOBILE NAV */
 .mnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:6px 0;padding-bottom:calc(6px + var(--safe-bottom));z-index:100}
@@ -156,45 +156,75 @@ input,select{font-family:var(--font);color:var(--text);font-size:16px;background
 .sum-cell-val.expense{color:var(--red)}
 
 /* INPUT */
-.type-seg{display:flex;gap:0;background:var(--bg2);border-radius:10px;padding:3px;width:100%}
+.type-seg{display:flex;gap:0;background:var(--bg2);border-radius:10px;padding:3px;width:100%;flex-shrink:0}
 .tsb{flex:1;padding:9px 0;border-radius:8px;font-size:13.5px;font-weight:600;text-align:center;cursor:pointer;color:var(--text2);transition:all .2s;white-space:nowrap}
 .tsb.on{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
 .tsb.on.expense{color:var(--red)}
 .tsb.on.income{color:var(--green)}
 .tsb.on.transfer{color:var(--blue)}
 
-/* Mobile input: numpad fixed at bottom */
+/* ── Mobile input layout: flex column, fixed bottom ── */
 @media(max-width:768px){
   .content.view-input{padding:0;gap:0;overflow:hidden;display:flex;flex-direction:column}
-  .input-scroll{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;padding-bottom:6px}
-  .input-numpad-fixed{flex-shrink:0;background:var(--surface);border-top:1px solid var(--border);padding-bottom:var(--safe-bottom)}
-  .input-numpad-fixed .save-btn{border-radius:0;box-shadow:none;padding:14px}
+  .input-scroll{flex:1;overflow-y:auto;padding:12px 14px 8px;display:flex;flex-direction:column;gap:10px}
+  .input-fixed{flex-shrink:0;background:var(--surface);border-top:1px solid var(--border)}
 }
 @media(min-width:769px){
   .amt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
 }
 
-.amt-display{font-size:44px;font-weight:800;text-align:center;padding:20px 20px 12px;letter-spacing:-2px;color:var(--text);transition:color .2s}
+/* Amount display */
+.amt-display{font-size:44px;font-weight:800;text-align:center;padding:14px 20px 8px;letter-spacing:-2px;color:var(--text);transition:color .2s;flex-shrink:0}
 .amt-display.expense{color:var(--red)}
 .amt-display.income{color:var(--green)}
 .amt-display.transfer{color:var(--blue)}
-.numpad{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border)}
-.np{padding:16px;font-size:20px;font-weight:600;text-align:center;cursor:pointer;color:var(--text);border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .1s;-webkit-tap-highlight-color:transparent}
-.np:nth-child(3n){border-right:none}
-.np:nth-last-child(-n+3){border-bottom:none}
-.np:active{background:var(--bg2)}
-.np.del{color:var(--text2);font-size:16px}
 
-.cat-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px;box-shadow:var(--shadow-sm)}
-.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-@media(max-width:360px){.cat-grid{grid-template-columns:repeat(4,1fr)}}
-.cat-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px;border-radius:8px;cursor:pointer;border:1.5px solid transparent;background:var(--bg2);transition:all .15s}
+/* Activity quick-entry bar */
+.act-bar{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;flex-shrink:0}
+.act-bar::-webkit-scrollbar{display:none}
+.act-chip{display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:7px 10px;min-width:56px;cursor:pointer;flex-shrink:0;transition:all .15s}
+.act-chip:active{transform:scale(.93);background:var(--bg2)}
+.act-chip.on{border-color:var(--accent);background:var(--accent-bg)}
+.act-ic{font-size:18px;line-height:1}
+.act-lbl{font-size:9px;font-weight:600;color:var(--text2);white-space:nowrap}
+.act-amt{font-size:8px;color:var(--text3)}
+.act-add{background:var(--bg2);border-style:dashed;color:var(--text3)}
+
+/* Category grid - 4 columns */
+.cat-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:10px;box-shadow:var(--shadow-sm)}
+.cat-sec-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border-radius:10px;cursor:pointer;border:1.5px solid transparent;background:var(--bg2);transition:all .15s;min-height:56px;justify-content:center}
 .cat-btn.on{border-color:var(--accent);background:var(--accent-bg)}
-.cat-btn:active{transform:scale(.94)}
-.cat-ic{font-size:18px;line-height:1}
-.cat-nm{font-size:9px;color:var(--text2);text-align:center;font-weight:500}
-.cat-btn.on .cat-nm{color:var(--accent);font-weight:600}
+.cat-btn:active{transform:scale(.93)}
+.cat-ic{font-size:20px;line-height:1}
+.cat-nm{font-size:9px;color:var(--text2);text-align:center;font-weight:500;line-height:1.2}
+.cat-btn.on .cat-nm{color:var(--accent);font-weight:700}
 
+/* Fixed bottom: form + numpad + save */
+.input-form-rows{background:var(--bg2);border-bottom:1px solid var(--border)}
+.ifr{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:10px;cursor:pointer;min-height:44px}
+.ifr:last-child{border-bottom:none}
+.ifr-label{font-size:11px;font-weight:700;color:var(--text3);width:44px;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px}
+.ifr-val{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.ifr-val.placeholder{color:var(--text3)}
+.ifr input,.ifr select{flex:1;font-size:14px;font-weight:500;color:var(--text);background:transparent;border:none;outline:none;-webkit-appearance:none;appearance:none;font-family:var(--font)}
+.ifr input::placeholder{color:var(--text3)}
+.ifr-arrow{font-size:12px;color:var(--text3)}
+
+/* Numpad - 4 columns */
+.numpad{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border)}
+.np{padding:15px 8px;font-size:19px;font-weight:600;text-align:center;cursor:pointer;color:var(--text);border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .1s;-webkit-tap-highlight-color:transparent;min-height:50px;display:flex;align-items:center;justify-content:center}
+.np:nth-child(4n){border-right:none}
+.np:nth-last-child(-n+4){border-bottom:none}
+.np:active{background:var(--bg2)}
+.np.del{color:var(--text2);font-size:15px}
+.np.clear{color:var(--red);font-size:13px;font-weight:700}
+.np.calc-btn{color:var(--accent);font-size:13px;font-weight:700}
+.np.save-np{background:var(--accent);color:#fff;font-size:13px;font-weight:800;letter-spacing:-.2px}
+.np.save-np:active{background:var(--accent2)}
+
+/* Desktop form card */
 .form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
 .form-row{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border2)}
 .form-row:last-child{border-bottom:none}
@@ -315,7 +345,7 @@ const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const KAIKERA_URL='https://dat0925.github.io/kaikera/';
 const SB=supabase.createClient(SUPABASE_URL,SUPABASE_ANON,{auth:{flowType:'pkce',redirectTo:KAIKERA_URL}});
 
-const S={view:'home',user:null,accounts:[],transactions:[],categories:[],month:new Date().toISOString().slice(0,7),inputType:'expense',inputAmount:'',inputCategoryId:null,inputAccountId:null,inputToAccountId:null,inputMemo:'',inputDate:new Date().toISOString().slice(0,10)};
+const S={view:'home',user:null,accounts:[],transactions:[],categories:[],activities:[],month:new Date().toISOString().slice(0,7),inputType:'expense',inputAmount:'',inputCategoryId:null,inputAccountId:null,inputToAccountId:null,inputMemo:'',inputDate:new Date().toISOString().slice(0,10),calcMode:false,calcAccum:0};
 
 function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -345,13 +375,15 @@ const ACCT_TYPES=[
 async function loadAll(){
   if(!S.user)return;
   const uid=S.user.id;
-  const[r1,r2,r3]=await Promise.all([
+  const[r1,r2,r3,r4]=await Promise.all([
     SB.from('kk_accounts').select('*').eq('user_id',uid).order('sort_order'),
     SB.from('kk_transactions').select('*').eq('user_id',uid).order('date',{ascending:false}).order('created_at',{ascending:false}),
     SB.from('kk_categories').select('*').eq('user_id',uid).order('sort_order'),
+    SB.from('kk_activities').select('*').eq('user_id',uid).order('sort_order').catch(()=>({data:[]})),
   ]);
   S.accounts=r1.data||[];S.transactions=r2.data||[];
   S.categories=r3.data&&r3.data.length?r3.data:DEFAULT_CATS;
+  S.activities=r4.data||[];
 }
 function getCats(type){return type==='transfer'?[]:S.categories.filter(c=>c.type===type);}
 function getCat(id){return S.categories.find(c=>c.id===id)||DEFAULT_CATS.find(c=>c.id===id)||{name:'その他',icon:'📦',color:'#6b7280'}}
@@ -413,12 +445,39 @@ function renderTxItem(t){
   </div>`;
 }
 
+function fmtDateShort(d){const dt=new Date(d+'T00:00:00');const today=new Date().toISOString().slice(0,10);const yest=new Date(Date.now()-86400000).toISOString().slice(0,10);if(d===today)return'今日';if(d===yest)return'昨日';return`${dt.getMonth()+1}/${dt.getDate()}(${['日','月','火','水','木','金','土'][dt.getDay()]})`;}
+
 function renderInput(){
   const cats=getCats(S.inputType),accts=S.accounts;
   const da=S.inputAmount?Number(S.inputAmount).toLocaleString('ja-JP'):'0';
+  const selAcct=accts.find(a=>a.id===S.inputAccountId);
+  const selToAcct=accts.find(a=>a.id===S.inputToAccountId);
   const isMobile=window.innerWidth<=768;
-  const numpadHtml=`<div class="numpad">${['7','8','9','4','5','6','1','2','3','000','0','⌫'].map(k=>`<button class="np ${k==='⌫'?'del':''}" data-key="${k}">${k}</button>`).join('')}</div>`;
+
+  // アクティビティバー (共通)
+  const actBar=S.activities.length?`<div class="act-bar">${S.activities.slice(0,8).map(a=>`<button class="act-chip" data-actid="${a.id}"><div class="act-ic">${esc(getCat(a.category_id).icon)}</div><div class="act-lbl">${esc(a.name)}</div><div class="act-amt">${a.amount?fmtAmt(a.amount):'¥-'}</div></button>`).join('')}<button class="act-chip act-add" id="act-add-btn"><div class="act-ic">＋</div><div class="act-lbl">登録</div></button></div>`
+  :`<div class="act-bar"><button class="act-chip act-add" id="act-add-btn"><div class="act-ic">＋</div><div class="act-lbl" style="white-space:normal;text-align:center">よく使う支出を<br>登録</div></button></div>`;
+
+  // カテゴリグリッド (4列)
+  const catGrid=S.inputType!=='transfer'?`<div class="cat-wrap"><div class="cat-sec-lbl">カテゴリ</div><div class="cat-grid">${cats.map(c=>`<button class="cat-btn ${S.inputCategoryId===c.id?'on':''}" data-catid="${c.id}"><span class="cat-ic">${esc(c.icon)}</span><span class="cat-nm">${esc(c.name)}</span></button>`).join('')}</div></div>`:'';
+
+  // テンキー (4列: 数字 + 右列に機能キー)
+  const numpad=`<div class="numpad">
+    <button class="np" data-key="7">7</button><button class="np" data-key="8">8</button><button class="np" data-key="9">9</button><button class="np clear" data-key="C">C</button>
+    <button class="np" data-key="4">4</button><button class="np" data-key="5">5</button><button class="np" data-key="6">6</button><button class="np del" data-key="⌫">⌫</button>
+    <button class="np" data-key="1">1</button><button class="np" data-key="2">2</button><button class="np" data-key="3">3</button><button class="np calc-btn" data-key="CALC">${S.calcMode?'＝':'＋'}</button>
+    <button class="np" data-key="000">000</button><button class="np" data-key="0">0</button><button class="np" data-key=".">.</button><button class="np save-np" id="save-tx-btn">保存</button>
+  </div>`;
+
   if(isMobile){
+    // フォーム行 (テンキー上固定)
+    const formRows=`<div class="input-form-rows">
+      <div class="ifr"><div class="ifr-label">日付</div><input class="fr-input" type="date" id="input-date" value="${S.inputDate}" style="flex:1;font-size:14px;font-weight:500"></div>
+      <div class="ifr"><div class="ifr-label">${S.inputType==='transfer'?'振替元':'口座'}</div><select class="fr-input" id="input-account" style="flex:1;font-size:14px"><option value="">選択…</option>${accts.map(a=>`<option value="${a.id}" ${S.inputAccountId===a.id?'selected':''}>${esc(a.name)} (${fmtAmt(a.balance||0)})</option>`).join('')}</select></div>
+      ${S.inputType==='transfer'?`<div class="ifr"><div class="ifr-label">振替先</div><select class="fr-input" id="input-to-account" style="flex:1;font-size:14px"><option value="">選択…</option>${accts.map(a=>`<option value="${a.id}" ${S.inputToAccountId===a.id?'selected':''}>${esc(a.name)} (${fmtAmt(a.balance||0)})</option>`).join('')}</select></div>`:''}
+      <div class="ifr"><div class="ifr-label">メモ</div><input class="fr-input" id="input-memo" placeholder="任意" value="${esc(S.inputMemo)}" style="flex:1;font-size:14px"></div>
+    </div>`;
+
     return`
   <div class="input-scroll">
     <div class="type-seg">
@@ -426,20 +485,17 @@ function renderInput(){
       <div class="tsb income ${S.inputType==='income'?'on':''}" data-itype="income">収入</div>
       <div class="tsb transfer ${S.inputType==='transfer'?'on':''}" data-itype="transfer">振替</div>
     </div>
-    <div class="amt-display ${S.inputType}" id="amt-display">¥${da}</div>
-    ${S.inputType!=='transfer'?`<div class="cat-wrap"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:10px">カテゴリ</div><div class="cat-grid">${cats.map(c=>`<button class="cat-btn ${S.inputCategoryId===c.id?'on':''}" data-catid="${c.id}"><span class="cat-ic">${esc(c.icon)}</span><span class="cat-nm">${esc(c.name)}</span></button>`).join('')}</div></div>`:''}
-    <div class="form-card">
-      <div class="form-row"><div class="fr-label">日付</div><input class="fr-input" type="date" id="input-date" value="${S.inputDate}"></div>
-      <div class="form-row"><div class="fr-label">${S.inputType==='transfer'?'振替元':'口座'}</div><select class="fr-input" id="input-account"><option value="">選択…</option>${accts.map(a=>`<option value="${a.id}" ${S.inputAccountId===a.id?'selected':''}>${esc(a.name)} (${fmtAmt(a.balance||0)})</option>`).join('')}</select></div>
-      ${S.inputType==='transfer'?`<div class="form-row"><div class="fr-label">振替先</div><select class="fr-input" id="input-to-account"><option value="">選択…</option>${accts.map(a=>`<option value="${a.id}" ${S.inputToAccountId===a.id?'selected':''}>${esc(a.name)} (${fmtAmt(a.balance||0)})</option>`).join('')}</select></div>`:''}
-      <div class="form-row"><div class="fr-label">メモ</div><input class="fr-input" id="input-memo" placeholder="任意" value="${esc(S.inputMemo)}"></div>
-    </div>
+    <div class="amt-display ${S.inputType}" id="amt-display">${S.calcMode?`<span style="font-size:16px;opacity:.6">+</span> `:''}¥${da}</div>
+    ${actBar}
+    ${catGrid}
   </div>
-  <div class="input-numpad-fixed">
-    ${numpadHtml}
-    <button class="save-btn" id="save-tx-btn">保存する</button>
+  <div class="input-fixed">
+    ${formRows}
+    ${numpad}
   </div>`;
   }
+
+  // Desktop layout (従来通り)
   return`
   <div class="type-seg">
     <div class="tsb expense ${S.inputType==='expense'?'on':''}" data-itype="expense">支出</div>
@@ -448,9 +504,10 @@ function renderInput(){
   </div>
   <div class="amt-card">
     <div class="amt-display ${S.inputType}" id="amt-display">¥${da}</div>
-    ${numpadHtml}
+    ${numpad}
   </div>
-  ${S.inputType!=='transfer'?`<div class="cat-wrap"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:10px">カテゴリ</div><div class="cat-grid">${cats.map(c=>`<button class="cat-btn ${S.inputCategoryId===c.id?'on':''}" data-catid="${c.id}"><span class="cat-ic">${esc(c.icon)}</span><span class="cat-nm">${esc(c.name)}</span></button>`).join('')}</div></div>`:''}
+  ${actBar}
+  ${catGrid}
   <div class="form-card">
     <div class="form-row"><div class="fr-label">日付</div><input class="fr-input" type="date" id="input-date" value="${S.inputDate}"></div>
     <div class="form-row"><div class="fr-label">${S.inputType==='transfer'?'振替元':'口座'}</div><select class="fr-input" id="input-account"><option value="">選択…</option>${accts.map(a=>`<option value="${a.id}" ${S.inputAccountId===a.id?'selected':''}>${esc(a.name)} (${fmtAmt(a.balance||0)})</option>`).join('')}</select></div>
@@ -514,14 +571,51 @@ function renderStats(){
 function afterRender(){
   document.querySelectorAll('[data-view]').forEach(el=>{el.onclick=()=>{S.view=el.dataset.view;render();closeSidebar();};});
   if(S.view==='input'){
-    document.querySelectorAll('[data-itype]').forEach(el=>{el.onclick=()=>{S.inputType=el.dataset.itype;S.inputCategoryId=null;render();};});
-    document.querySelectorAll('[data-key]').forEach(btn=>{btn.onclick=()=>{const k=btn.dataset.key;if(k==='⌫')S.inputAmount=S.inputAmount.slice(0,-1);else if(k==='000')S.inputAmount=(S.inputAmount||'')+'000';else S.inputAmount=(S.inputAmount||'')+k;if(Number(S.inputAmount)>99999999)S.inputAmount='99999999';const d=document.getElementById('amt-display');if(d)d.textContent='¥'+(S.inputAmount?Number(S.inputAmount).toLocaleString('ja-JP'):'0');};});
+    document.querySelectorAll('[data-itype]').forEach(el=>{el.onclick=()=>{S.inputType=el.dataset.itype;S.inputCategoryId=null;S.calcMode=false;S.calcAccum=0;render();};});
+
+    // テンキー: 4列対応 (C=クリア, CALC=電卓モード)
+    document.querySelectorAll('[data-key]').forEach(btn=>{
+      btn.onclick=()=>{
+        const k=btn.dataset.key;
+        const updateDisp=()=>{const d=document.getElementById('amt-display');if(d){const n=S.inputAmount?Number(S.inputAmount).toLocaleString('ja-JP'):'0';d.innerHTML=S.calcMode?`<span style="font-size:16px;opacity:.6">+</span> ¥${n}`:`¥${n}`;}};
+        if(k==='C'){S.inputAmount='';S.calcMode=false;S.calcAccum=0;updateDisp();return;}
+        if(k==='⌫'){S.inputAmount=S.inputAmount.slice(0,-1);updateDisp();return;}
+        if(k==='CALC'){
+          if(!S.calcMode){S.calcAccum=Number(S.inputAmount)||0;S.inputAmount='';S.calcMode=true;}
+          else{S.inputAmount=String(S.calcAccum+Number(S.inputAmount||0));S.calcMode=false;S.calcAccum=0;}
+          updateDisp();return;
+        }
+        if(k==='000')S.inputAmount=(S.inputAmount||'')+'000';
+        else S.inputAmount=(S.inputAmount||'')+k;
+        if(Number(S.inputAmount)>99999999)S.inputAmount='99999999';
+        updateDisp();
+      };
+    });
+
     document.querySelectorAll('[data-catid]').forEach(btn=>{btn.onclick=()=>{S.inputCategoryId=btn.dataset.catid;document.querySelectorAll('[data-catid]').forEach(b=>b.classList.toggle('on',b.dataset.catid===S.inputCategoryId));};});
     const di=document.getElementById('input-date');if(di)di.onchange=()=>S.inputDate=di.value;
     const ai=document.getElementById('input-account');if(ai)ai.onchange=()=>S.inputAccountId=ai.value;
     const ti=document.getElementById('input-to-account');if(ti)ti.onchange=()=>S.inputToAccountId=ti.value;
     const mi=document.getElementById('input-memo');if(mi)mi.oninput=()=>S.inputMemo=mi.value;
     const sb=document.getElementById('save-tx-btn');if(sb)sb.onclick=saveTx;
+
+    // アクティビティ: タップで即入力
+    document.querySelectorAll('[data-actid]').forEach(btn=>{
+      btn.onclick=()=>{
+        const act=S.activities.find(a=>a.id===btn.dataset.actid);
+        if(!act)return;
+        if(act.amount)S.inputAmount=String(act.amount);
+        if(act.category_id)S.inputCategoryId=act.category_id;
+        if(act.account_id)S.inputAccountId=act.account_id;
+        S.inputType=act.type||'expense';
+        S.calcMode=false;S.calcAccum=0;
+        render();
+      };
+    });
+
+    // アクティビティ登録ボタン
+    const aab=document.getElementById('act-add-btn');
+    if(aab)aab.onclick=()=>showAddActivityModal();
   }
   if(S.view==='history'||S.view==='stats'){
     const prev=document.getElementById('prev-month'),next=document.getElementById('next-month');
@@ -548,7 +642,31 @@ async function saveTx(){
   const acct=getAcct(S.inputAccountId);
   if(acct){let nb=Number(acct.balance||0);if(tx.type==='expense')nb-=amount;else if(tx.type==='income')nb+=amount;else nb-=amount;await SB.from('kk_accounts').update({balance:nb}).eq('id',acct.id);}
   if(tx.type==='transfer'&&S.inputToAccountId){const ta=getAcct(S.inputToAccountId);if(ta)await SB.from('kk_accounts').update({balance:Number(ta.balance||0)+amount}).eq('id',ta.id);}
-  toast('保存しました ✓');S.inputAmount='';S.inputMemo='';S.inputCategoryId=null;await loadAll();render();
+  toast('保存しました ✓');S.inputAmount='';S.inputMemo='';S.inputCategoryId=null;S.calcMode=false;S.calcAccum=0;await loadAll();render();
+}
+
+function showAddActivityModal(){
+  const cats=S.categories.filter(c=>c.type===S.inputType);
+  const accts=S.accounts;
+  const ov=document.createElement('div');ov.className='overlay';
+  ov.innerHTML=`<div class="modal"><div class="modal-handle"></div><div class="modal-title">クイック入力を登録</div>
+    <div class="fg"><label class="flabel">名前</label><input class="finput" id="aa-name" placeholder="例: コンビニ, 電車…"></div>
+    <div class="fg"><label class="flabel">タイプ</label><select class="fselect" id="aa-type"><option value="expense">支出</option><option value="income">収入</option></select></div>
+    <div class="fg"><label class="flabel">カテゴリ</label><select class="fselect" id="aa-cat"><option value="">選択…</option>${S.categories.map(c=>`<option value="${c.id}" ${S.inputCategoryId===c.id?'selected':''}>${c.icon} ${c.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="flabel">口座</label><select class="fselect" id="aa-acct"><option value="">毎回選択</option>${accts.map(a=>`<option value="${a.id}" ${S.inputAccountId===a.id?'selected':''}>${a.name}</option>`).join('')}</select></div>
+    <div class="fg"><label class="flabel">金額（任意）</label><input class="finput" id="aa-amt" type="number" placeholder="空白=毎回入力"></div>
+    <div class="modal-foot"><button class="btn" id="aa-cancel">キャンセル</button><button class="btn btn-primary" id="aa-ok">登録</button></div>
+  </div>`;
+  document.body.appendChild(ov);requestAnimationFrame(()=>ov.classList.add('open'));
+  ov.querySelector('#aa-cancel').onclick=()=>ov.remove();
+  ov.querySelector('#aa-ok').onclick=async()=>{
+    const name=ov.querySelector('#aa-name').value.trim();
+    if(!name){toast('名前を入力してください');return;}
+    const act={id:uid(),user_id:S.user.id,name,type:ov.querySelector('#aa-type').value,category_id:ov.querySelector('#aa-cat').value||null,account_id:ov.querySelector('#aa-acct').value||null,amount:ov.querySelector('#aa-amt').value?Number(ov.querySelector('#aa-amt').value):null,sort_order:S.activities.length};
+    const{error}=await SB.from('kk_activities').insert(act);
+    if(error){toast('登録に失敗しました');console.error(error);return;}
+    toast('登録しました ✓');ov.remove();await loadAll();render();
+  };
 }
 
 function showAddAccountModal(){
